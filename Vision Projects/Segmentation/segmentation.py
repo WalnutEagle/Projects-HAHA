@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import torch
-from train_mask_rcnn import MaskRCNN
+# from train_mask_rcnn import MaskRCNN
 
 # Load the trained Mask R-CNN model.
 num_classes = 81
