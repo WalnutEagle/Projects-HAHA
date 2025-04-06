@@ -5,7 +5,7 @@ import torch
 
 # Load the trained Mask R-CNN model.
 num_classes = 81
-model = MaskRCNN(num_classes)
+model = MaskRCNN(num_classes)# Here make the change to the model architecture that you are using, where you just define the model architecture and Load the pre-trained weights of the model.
 model.load_state_dict(torch.load("inhouse_mask_rcnn.pth"))
 model.eval()
 
