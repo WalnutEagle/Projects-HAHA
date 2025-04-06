@@ -1,0 +1,6 @@
+This is a Flask Version that i made for the assignment 4 of the MET_CS_673 course.
+To run this all you need to do is download the entire folder and then run or doubleclick 
+on the run_app.bat file, there after when you want to close the program all you have to 
+do is go on the windows cmd which is open in background and press Ctrl+C and then Y to 
+terminate the program and then close the window that the program opens in your browser.
+Thanks :)

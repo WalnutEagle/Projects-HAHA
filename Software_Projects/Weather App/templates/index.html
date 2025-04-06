@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+</head>
+<body>
+    <style>
+         body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://images.unsplash.com/photo-1503104834681-bbc5e67030a4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            background-color: aqua;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 42px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4285f4;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #357ae8;
+        }
+
+        #weatherInfo {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .weather-details {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .weather-detail {
+            flex: 1;
+            text-align: center;
+            margin: 10px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+        }
+
+        .weather-detail p:first-child {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .weather-icon {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto;
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+    </style>
+    <div class="container">
+        <h1>Weather App</h1>
+        <form id="weatherForm">
+            <label for="cityInput">Enter city name:</label>
+            <input type="text" id="cityInput" name="city" placeholder="Enter city name">
+            <button type="submit">Get Weather</button>
+        </form>
+        <div id="weatherInfo"></div>
+    </div>
+
+    <script>
+        document.getElementById("weatherForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent the default form submission behavior
+
+            var city = document.getElementById("cityInput").value;
+            var formData = new FormData();
+            formData.append('city', city);
+
+            fetch("/get_weather", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                var weatherInfo = document.getElementById("weatherInfo");
+                if (data.error) {
+                    weatherInfo.innerHTML = "<p>Error fetching weather data.</p>";
+                } else {
+                    weatherInfo.innerHTML = `
+                        <h2>Weather for ${city}</h2>
+                        <div class="weather-details">
+                            <div class="weather-detail">
+                                <p>Temperature</p>
+                                <p>${data.temperature}°C</p>
+                            </div>
+                            <div class="weather-detail">
+                                <p>Feels like</p>
+                                <p>${data.feels_like}°C</p>
+                            </div>
+                            <div class="weather-detail">
+                                <p>Humidity</p>
+                                <p>${data.humidity}%</p>
+                            </div>
+                            <div class="weather-detail">
+                                <p>Wind Speed</p>
+                                <p>${data.wind_speed} m/s</p>
+                            </div>
+                            <div class="weather-detail">
+                                <p>Visibility</p>
+                                <p>${data.visibility} km</p>
+                            </div>
+                            <div class="weather-detail">
+                                <p>Weather description</p>
+                                <p>${data.weather_description}</p>
+                            </div>
+                        </div>
+                        <div class="weather-icon" style="background-image: url('https://openweathermap.org/img/wn/${data.weather_icon}.png');"></div>
+                    `;
+                }
+            })
+            .catch(error => {
+                console.log("Error fetching weather data:", error);
+            });
+        });
+    </script>
+</body>
+</html>
